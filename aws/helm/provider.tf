@@ -34,7 +34,6 @@ provider "aws" {
   }
 }
 
-# Kubernetes provider configuration
 provider "kubernetes" {
   host                   = data.terraform_remote_state.cluster.outputs.eks_cluster_endpoint
   cluster_ca_certificate = base64decode(data.terraform_remote_state.cluster.outputs.eks_cluster_certificate_authority_data)
@@ -58,7 +57,6 @@ provider "kubernetes" {
   }
 }
 
-# Helm provider configuration
 provider "helm" {
   kubernetes {
     host                   = data.terraform_remote_state.cluster.outputs.eks_cluster_endpoint

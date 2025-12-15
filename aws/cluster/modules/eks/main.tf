@@ -108,7 +108,6 @@ resource "aws_eks_addon" "coredns" {
   })
 }
 
-# OIDC Provider for IRSA (IAM Roles for Service Accounts)
 resource "aws_iam_openid_connect_provider" "cluster" {
   client_id_list  = ["sts.amazonaws.com"]
   thumbprint_list = [data.tls_certificate.cluster.certificates[0].sha1_fingerprint]
@@ -119,7 +118,6 @@ resource "aws_iam_openid_connect_provider" "cluster" {
   })
 }
 
-# IAM Role for AWS Load Balancer Controller
 resource "aws_iam_role" "aws_load_balancer_controller" {
   name = "${var.cluster_name}-aws-load-balancer-controller"
 
@@ -145,7 +143,6 @@ resource "aws_iam_role" "aws_load_balancer_controller" {
   })
 }
 
-# IAM Policy for AWS Load Balancer Controller
 resource "aws_iam_policy" "aws_load_balancer_controller" {
   name        = "${var.cluster_name}-aws-load-balancer-controller"
   description = "IAM policy for AWS Load Balancer Controller"

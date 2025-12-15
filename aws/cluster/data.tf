@@ -1,4 +1,3 @@
-# Reference VPC state from remote backend
 data "terraform_remote_state" "vpc" {
   backend = "s3"
 

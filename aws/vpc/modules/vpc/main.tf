@@ -45,7 +45,6 @@ resource "aws_subnet" "private" {
   )
 }
 
-# Internet Gateway
 resource "aws_internet_gateway" "this" {
   vpc_id = aws_vpc.this.id
 
@@ -54,7 +53,6 @@ resource "aws_internet_gateway" "this" {
   }
 }
 
-# Route Table for Public Subnets
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.this.id
 
@@ -68,14 +66,12 @@ resource "aws_route_table" "public" {
   }
 }
 
-# Associate Route Table with Public Subnets
 resource "aws_route_table_association" "public" {
   count          = var.public_subnet_count
   subnet_id      = aws_subnet.public[count.index].id
   route_table_id = aws_route_table.public.id
 }
 
-# NAT Gateway for private subnets
 resource "aws_eip" "nat" {
   count  = var.enable_nat_gateway ? 1 : 0
   domain = "vpc"
@@ -99,7 +95,6 @@ resource "aws_nat_gateway" "this" {
   depends_on = [aws_internet_gateway.this]
 }
 
-# Route Table for Private Subnets
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.this.id
 
@@ -108,7 +103,6 @@ resource "aws_route_table" "private" {
   }
 }
 
-# Route for private subnets to NAT Gateway
 resource "aws_route" "private_nat_gateway" {
   count                  = var.enable_nat_gateway ? 1 : 0
   route_table_id         = aws_route_table.private.id
@@ -116,7 +110,6 @@ resource "aws_route" "private_nat_gateway" {
   nat_gateway_id         = aws_nat_gateway.this[0].id
 }
 
-# Associate Private Subnets with Private Route Table
 resource "aws_route_table_association" "private" {
   count          = var.private_subnet_count
   subnet_id      = aws_subnet.private[count.index].id
