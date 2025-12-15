@@ -38,39 +38,6 @@ variable "vpc_state_key" {
   default     = "vpc/terraform.tfstate"
 }
 
-variable "alb_name" {
-  description = "Name of the Application Load Balancer"
-  type        = string
-}
-
-variable "alb_security_group_ingress_rules" {
-  description = "Ingress rules for the ALB security group"
-  type = list(object({
-    description               = optional(string)
-    from_port                 = number
-    to_port                   = number
-    protocol                  = string
-    cidr_blocks               = optional(list(string))
-    ipv6_cidr_blocks          = optional(list(string))
-    source_security_group_id  = optional(string)
-    source_security_group_key = optional(string)
-  }))
-}
-
-variable "alb_security_group_egress_rules" {
-  description = "Egress rules for the ALB security group"
-  type = list(object({
-    description               = optional(string)
-    from_port                 = number
-    to_port                   = number
-    protocol                  = string
-    cidr_blocks               = optional(list(string))
-    ipv6_cidr_blocks          = optional(list(string))
-    source_security_group_id  = optional(string)
-    source_security_group_key = optional(string)
-  }))
-}
-
 variable "fargate_namespaces" {
   description = "List of Kubernetes namespaces for Fargate profiles"
   type        = list(string)

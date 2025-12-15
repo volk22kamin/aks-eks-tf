@@ -17,10 +17,6 @@ module "hello_world_app" {
   chart_name       = "hello-world-app"
   namespace        = "default"
 
-  set_values = {
-    "ingress.enabled" = "false"
-  }
-
   depends_on = [module.aws_load_balancer_controller]
 }
 
@@ -51,33 +47,8 @@ module "aws_load_balancer_controller" {
   atomic          = true
 }
 
-resource "kubernetes_manifest" "hello_world_target_group_binding" {
-  manifest = {
-    apiVersion = "elbv2.k8s.aws/v1beta1"
-    kind       = "TargetGroupBinding"
-    metadata = {
-      name      = "hello-world"
-      namespace = "default"
-    }
-    spec = {
-      targetGroupARN = data.terraform_remote_state.cluster.outputs.alb_hello_world_target_group_arn
-      serviceRef = {
-        name = "hello-world-hello-world-app"
-        port = 80
-      }
-      networking = {
-        ingress = [{
-          from = [{
-            ipBlock = { cidr = "0.0.0.0/0" }
-          }]
-          ports = [{
-            protocol = "TCP"
-            port     = 8080
-          }]
-        }]
-      }
-    }
-  }
+resource "kubernetes_manifest" "hello_world_ingress" {
+  manifest = yamldecode(file("${path.module}/ingress.yaml"))
 
   depends_on = [
     module.aws_load_balancer_controller,

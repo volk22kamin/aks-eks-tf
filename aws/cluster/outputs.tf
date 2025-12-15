@@ -3,31 +3,6 @@ output "vpc_id" {
   value       = data.terraform_remote_state.vpc.outputs.vpc_id
 }
 
-output "alb_dns_name" {
-  description = "DNS name of the Application Load Balancer"
-  value       = module.alb.alb_dns_name
-}
-
-output "alb_hello_world_target_group_arn" {
-  description = "Target group ARN for hello world"
-  value       = module.alb.hello_world_target_group_arn
-}
-
-output "alb_arn" {
-  description = "ARN of the Application Load Balancer"
-  value       = module.alb.alb_arn
-}
-
-output "alb_hello_world_listener_rule_arn" {
-  description = "Listener rule ARN for hello world"
-  value       = module.alb.hello_world_listener_rule_arn
-}
-
-output "alb_security_group_id" {
-  description = "Security group ID for ALB"
-  value       = module.security_groups.security_group_ids["alb"]
-}
-
 output "eks_cluster_id" {
   description = "EKS cluster ID"
   value       = module.eks.cluster_id
