@@ -22,7 +22,6 @@ resource "aws_iam_role_policy_attachment" "cluster_policy" {
   role       = aws_iam_role.cluster.name
 }
 
-# EKS Cluster
 resource "aws_eks_cluster" "this" {
   name     = var.cluster_name
   role_arn = aws_iam_role.cluster.arn
@@ -45,7 +44,6 @@ resource "aws_eks_cluster" "this" {
   })
 }
 
-# Fargate Pod Execution IAM Role
 resource "aws_iam_role" "fargate_pod_execution" {
   name = "${var.cluster_name}-fargate-pod-execution-role"
 
@@ -70,7 +68,6 @@ resource "aws_iam_role_policy_attachment" "fargate_pod_execution_policy" {
   role       = aws_iam_role.fargate_pod_execution.name
 }
 
-# Fargate Profiles
 resource "aws_eks_fargate_profile" "this" {
   for_each = toset(var.fargate_namespaces)
 
@@ -195,29 +192,6 @@ resource "aws_iam_policy" "aws_load_balancer_controller" {
           "elasticloadbalancing:DescribeTargetGroupAttributes",
           "elasticloadbalancing:DescribeTargetHealth",
           "elasticloadbalancing:DescribeTags"
-        ]
-        Resource = "*"
-      },
-      {
-        Effect = "Allow"
-        Action = [
-          "cognito-idp:DescribeUserPoolClient",
-          "acm:ListCertificates",
-          "acm:DescribeCertificate",
-          "iam:ListServerCertificates",
-          "iam:GetServerCertificate",
-          "waf-regional:GetWebACL",
-          "waf-regional:GetWebACLForResource",
-          "waf-regional:AssociateWebACL",
-          "waf-regional:DisassociateWebACL",
-          "wafv2:GetWebACL",
-          "wafv2:GetWebACLForResource",
-          "wafv2:AssociateWebACL",
-          "wafv2:DisassociateWebACL",
-          "shield:GetSubscriptionState",
-          "shield:DescribeProtection",
-          "shield:CreateProtection",
-          "shield:DeleteProtection"
         ]
         Resource = "*"
       },
