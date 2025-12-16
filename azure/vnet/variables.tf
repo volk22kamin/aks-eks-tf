@@ -34,3 +34,60 @@ variable "cluster_name" {
   type        = string
   default     = ""
 }
+
+variable "public_nsg_rules" {
+  description = "Map of security rules for public subnet NSG"
+  type = map(object({
+    priority                     = number
+    direction                    = string
+    access                       = string
+    protocol                     = string
+    source_port_range            = optional(string, "*")
+    destination_port_range       = optional(string, "*")
+    source_port_ranges           = optional(list(string))
+    destination_port_ranges      = optional(list(string))
+    source_address_prefix        = optional(string)
+    destination_address_prefix   = optional(string)
+    source_address_prefixes      = optional(list(string))
+    destination_address_prefixes = optional(list(string))
+  }))
+  default = {}
+}
+
+variable "private_nsg_rules" {
+  description = "Map of security rules for private subnet NSG"
+  type = map(object({
+    priority                     = number
+    direction                    = string
+    access                       = string
+    protocol                     = string
+    source_port_range            = optional(string, "*")
+    destination_port_range       = optional(string, "*")
+    source_port_ranges           = optional(list(string))
+    destination_port_ranges      = optional(list(string))
+    source_address_prefix        = optional(string)
+    destination_address_prefix   = optional(string)
+    source_address_prefixes      = optional(list(string))
+    destination_address_prefixes = optional(list(string))
+  }))
+  default = {}
+}
+
+variable "appgw_nsg_rules" {
+  description = "Map of security rules for Application Gateway subnet NSG"
+  type = map(object({
+    priority                     = number
+    direction                    = string
+    access                       = string
+    protocol                     = string
+    source_port_range            = optional(string, "*")
+    destination_port_range       = optional(string, "*")
+    source_port_ranges           = optional(list(string))
+    destination_port_ranges      = optional(list(string))
+    source_address_prefix        = optional(string)
+    destination_address_prefix   = optional(string)
+    source_address_prefixes      = optional(list(string))
+    destination_address_prefixes = optional(list(string))
+  }))
+  default = {}
+}

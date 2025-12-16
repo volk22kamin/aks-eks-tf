@@ -17,4 +17,9 @@ module "vnet" {
   enable_nat_gateway   = var.enable_nat_gateway
   cluster_name         = var.cluster_name
   tags                 = var.default_tags
+
+
+  public_nsg_rules  = var.public_nsg_rules
+  private_nsg_rules = var.private_nsg_rules
+  appgw_nsg_rules   = var.appgw_nsg_rules
 }

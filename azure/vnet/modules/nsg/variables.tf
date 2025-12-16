@@ -1,15 +1,10 @@
-variable "vnet_address_space" {
-  description = "The address space for the Virtual Network"
-  type        = list(string)
-}
-
 variable "name" {
-  description = "The name of the Virtual Network"
+  description = "Base name for NSG resources"
   type        = string
 }
 
 variable "location" {
-  description = "Azure region for resources"
+  description = "Azure region for NSG resources"
   type        = string
 }
 
@@ -18,40 +13,35 @@ variable "resource_group_name" {
   type        = string
 }
 
+variable "public_subnet_ids" {
+  description = "List of public subnet IDs to associate with public NSG"
+  type        = list(string)
+}
+
+variable "private_subnet_ids" {
+  description = "List of private subnet IDs to associate with private NSG"
+  type        = list(string)
+}
+
+variable "appgw_subnet_id" {
+  description = "Application Gateway subnet ID to associate with appgw NSG"
+  type        = string
+}
+
 variable "public_subnet_count" {
-  description = "Number of public subnets to create"
+  description = "Number of public subnets"
   type        = number
-  default     = 2
 }
 
 variable "private_subnet_count" {
-  description = "Number of private subnets to create"
+  description = "Number of private subnets"
   type        = number
-  default     = 2
-}
-
-variable "enable_nat_gateway" {
-  description = "Enable NAT Gateway for private subnets"
-  type        = bool
-  default     = true
-}
-
-variable "cluster_name" {
-  description = "AKS cluster name for resource naming"
-  type        = string
-  default     = ""
 }
 
 variable "tags" {
-  description = "Tags to apply to resources"
+  description = "Tags to apply to NSG resources"
   type        = map(string)
   default     = {}
-}
-
-variable "enable_nsgs" {
-  description = "Enable Network Security Groups for subnets"
-  type        = bool
-  default     = true
 }
 
 variable "public_nsg_rules" {

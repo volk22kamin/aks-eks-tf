@@ -74,3 +74,22 @@ resource "azurerm_subnet_nat_gateway_association" "private" {
   subnet_id      = azurerm_subnet.private[count.index].id
   nat_gateway_id = azurerm_nat_gateway.this[0].id
 }
+
+
+module "nsg" {
+  source = "../nsg"
+  count  = var.enable_nsgs ? 1 : 0
+
+  name                 = var.name
+  location             = var.location
+  resource_group_name  = var.resource_group_name
+  public_subnet_ids    = azurerm_subnet.public[*].id
+  private_subnet_ids   = azurerm_subnet.private[*].id
+  appgw_subnet_id      = azurerm_subnet.appgw.id
+  public_subnet_count  = var.public_subnet_count
+  private_subnet_count = var.private_subnet_count
+  public_nsg_rules     = var.public_nsg_rules
+  private_nsg_rules    = var.private_nsg_rules
+  appgw_nsg_rules      = var.appgw_nsg_rules
+  tags                 = var.tags
+}
