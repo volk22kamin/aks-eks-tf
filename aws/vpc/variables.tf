@@ -34,3 +34,9 @@ variable "cluster_name" {
   type        = string
   default     = ""
 }
+
+variable "profile" {
+  description = "AWS profile to use for authentication"
+  type        = string
+  default     = "default"
+}

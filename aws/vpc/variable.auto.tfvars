@@ -9,3 +9,4 @@ default_tags = {
 }
 cluster_name = "mend-eks-cluster"
 enable_nat_gateway = true
+profile = "mend"

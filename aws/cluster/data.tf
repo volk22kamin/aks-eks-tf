@@ -8,3 +8,5 @@ data "terraform_remote_state" "vpc" {
     profile = var.aws_profile
   }
 }
+
+data "aws_caller_identity" "current" {}
