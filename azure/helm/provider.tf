@@ -22,7 +22,6 @@ terraform {
 }
 
 locals {
-  # Remote state exposes kube_config_raw (YAML), so parse it once for provider configs
   kube_config = yamldecode(data.terraform_remote_state.cluster.outputs.kube_config)
 }
 
