@@ -1,4 +1,8 @@
 resource "null_resource" "rbac_permissions" {
+  triggers = {
+    once = "v1"
+  }
+
   provisioner "local-exec" {
     command     = "${path.module}/rbac-permissions.sh"
     interpreter = ["/bin/bash", "-c"]
