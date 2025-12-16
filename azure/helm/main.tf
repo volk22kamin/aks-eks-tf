@@ -1,3 +1,10 @@
+resource "null_resource" "rbac_permissions" {
+  provisioner "local-exec" {
+    command     = "${path.module}/rbac-permissions.sh"
+    interpreter = ["/bin/bash", "-c"]
+  }
+}
+
 module "hello_world_app" {
   source = "./modules/helm-chart"
 
@@ -6,6 +13,9 @@ module "hello_world_app" {
   chart_name       = "hello-world-app"
   namespace        = "default"
 
+  depends_on = [
+    null_resource.rbac_permissions
+  ]
 }
 
 resource "kubernetes_manifest" "hello_world_ingress" {
