@@ -36,8 +36,6 @@ azure/
 
 ---
 
-### 2. **vnet** - Virtual Network
-
 **Purpose**: Creates the networking foundation for the AKS cluster.
 
 **Resources Created**:
@@ -46,9 +44,15 @@ azure/
 - Virtual Network (VNet)
 - Public subnets (for Application Gateway)
 - Private subnets (for AKS nodes)
+- Application Gateway dedicated subnet
 - NAT Gateway (for private subnet internet access)
 - Public IP for NAT Gateway
-- Route tables and associations
+- Network Security Groups (NSGs)
+  - Public subnet NSG (shared across all public subnets)
+  - Private subnet NSG (shared across all private subnets)
+  - Application Gateway subnet NSG
+- NSG security rules (dynamically configured)
+- NSG-subnet associations
 
 **Key Features**:
 
@@ -56,11 +60,41 @@ azure/
 - Configurable number of public/private subnets
 - Multi-AZ deployment for high availability
 - Dedicated subnet for Application Gateway
+- **Network Security Groups with dynamic rule configuration**
+  - 3 NSGs covering all subnet types
+  - Customizable security rules via variable maps
+  - Optional fields for flexible rule definition
+  - Default rules provided for common scenarios
 - Proper tagging for AKS cluster discovery
 
-**Module Location**: `./vnet/modules/vnet/`
+**Module Location**: `./vnet/modules/vnet/`, `./vnet/modules/nsg/`
 
 **State Storage**: Remote state stored in Azure Storage (`vnet.tfstate`)
+
+**NSG Configuration**:
+
+The VNet module includes a dedicated NSG submodule that creates security rules dynamically based on variable maps. You can customize rules in `variable.auto.tfvars`:
+
+```hcl
+public_nsg_rules = {
+  "AllowHTTPInbound" = {
+    priority                   = 500
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    destination_port_range     = "80"
+    source_address_prefixes    = ["0.0.0.0/0"]
+    destination_address_prefix = "*"
+  }
+  # Add more rules as needed
+}
+```
+
+**Default NSG Rules**:
+
+- **Public subnets**: HTTP (80), HTTPS (443), VNet communication
+- **Private subnets**: VNet communication only, internet egress via NAT
+- **App Gateway subnet**: HTTP/HTTPS, GatewayManager, AzureLoadBalancer
 
 ---
 
